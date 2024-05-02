@@ -22,42 +22,46 @@ const playRound = (humanChoice, computerChoice) => {
   let playerWins;
   let text;
   if (humanChoice === computerChoice) {
-    console.log("Draw");
+    return("Draw");
     return;
-  } else if (playerSelections.includes("rock" && "paper")) {
+  } else if (playerSelections.includes("rock") && playerSelections.includes("paper")) {
     playerWins = humanChoice.toLowerCase() === "paper";
     text = "Paper beats rock!";
-  } else if (playerSelections.includes("rock" && "scissors")) {
+  } else if (playerSelections.includes("rock") && playerSelections.includes("scissors")) {
     playerWins = humanChoice.toLowerCase() === "rock";
     text = "Rock beats scissors!";
-  } else if (playerSelections.includes("paper" && "scissors")) {
+  } else if (playerSelections.includes("scissors") && playerSelections.includes("paper")) {
     playerWins = humanChoice.toLowerCase() === "scissors";
     text = "Scissors beats paper!";
   } else {
-    console.log("Invalid option");
+    return("Invalid option");
   }
   if (playerWins) {
     humanScore++;
-    console.log("You win! " + text);
+    return("You win! " + text);
   } else {
     computerScore++;
-    console.log("You lose! " + text);
+    return("You lose! " + text);
   }
 };
 
-const playGame = () => {
-  for (let i = 0; i < 5; i++) {
-    const humanSelection = getHumanChoice();
-    const computerSelection = getComputerChoice();
-    playRound(humanSelection, computerSelection);
-  }
-  if (humanScore > computerScore) {
-    console.log("Congratulations you win!");
-  } else if (humanScore === computerScore) {
-    console.log("It's a Draw");
-  } else {
-    console.log("You lose");
-  }
+const body = document.querySelector("body");
+const buttons = document.querySelectorAll("button");
+const script = document.querySelector("script");
+const resultDiv = document.createElement("div");
+const puntuation = document.createElement("span");
+
+const selection = (e) => {
+  const humanChoice = e.target.innerText;
+  const computerChoice = getComputerChoice();
+
+  resultDiv.textContent = playRound(humanChoice, computerChoice);
+  puntuation.textContent = `PLAYER: ${humanScore}, CPU: ${computerScore}`;
+
+  body.insertBefore(resultDiv, script);
+  body.insertBefore(puntuation, resultDiv);
 };
 
-playGame();
+buttons.forEach(button => {
+  button.addEventListener("click", selection);
+})
